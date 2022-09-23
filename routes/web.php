@@ -19,5 +19,12 @@ use App\Http\Controllers\ProductController;
 //     return view('welcome');
 // });
 Route::get('/',[ProductController::class,'manage'])->name('manage');
+Route::get('/product',[ProductController::class,'product'])->name('product');
+
+//AmountSave
+Route::post('/amount/save',[ProductController::class,'amountSave'])->name('amountSave');
+
+// billNo
+Route::post('/billNO',[ProductController::class,'bill'])->name('bill');
 
 
