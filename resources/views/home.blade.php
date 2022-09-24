@@ -149,6 +149,8 @@
     $(document).ready(function() {
         $('#product').change(function(){
             let productId = $(this).find(':selected').val();
+           
+            console.log(productId)
 
             var url = '{{ route("getDataByAjax", ":id") }}';
             url = url.replace(':id', productId);
