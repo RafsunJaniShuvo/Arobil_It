@@ -47,14 +47,14 @@
                         <th scope="row"> {{$loop->iteration}} </th>
                         <td> {{$item->date}} </td>
                         <td> {{$item->billNo}} </td>
-                        <td> {{Customer::find($item->customer_id)->name}} </td>
+                        <td>{{Customer::find($item->customer_id)->name}}  </td>
                         <td> {{$item->totaldiscount}} </td>
                         <td> {{$item->totalbillamount}}</td>
                         <td> {{$item->dueamount}}</td>
                         <td> {{$item->paidamount}}</td>
                        
                         <td>
-                            <a href="" class="btn btn-success">Edit</a>
+                            <a href="{{route('eidtbill',['id'=>$item->id])}}" class="btn btn-success">Edit</a>
                          </td>
                       
                     

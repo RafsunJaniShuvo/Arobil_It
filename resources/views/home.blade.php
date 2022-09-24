@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>Arobil-It!</title>
   </head>
   <body>
     <div class="container">
@@ -18,34 +18,30 @@
             </div>
             <hr>
             @if (session('status'))
-    <div class="alert alert-success">
-        {{ session('status') }}
-    </div>
-@endif
+                <div class="alert alert-success">
+                    {{ session('status') }}
+                </div>
+            @endif
 
          <form action="{{route('bill')}}" method="POST">
             @csrf
-                 {{-- billNO start --}}
+               
             <div class="row mb-2 ">
-            <div class="mt-2 col-2">
-                {{-- <label for="bill" class="form-label">Seach With Bill</label> --}}
-                <input type="number" name="bill" class="form-control" id="bill" placeholder="Bill NO">
-                
+                <div class="mt-2 col-2">
+                    <input type="number" name="bill" class="form-control" id="bill" placeholder="Bill NO">
+
+                </div>
+                <div class="col-4 mt-2  ">
+                    <button type="submit" class="btn btn-primary">Find</button>
+                </div>
             </div>
-            <div class="col-4 mt-2  ">
-                <button type="submit" class="btn btn-primary">Find</button>
-            </div>
-           
         </form>
-            </div>
-                {{-- billNO End --}}
+                
                 <form action="{{route('amountSave')}}" method="POST">
                
                     <div class="row mb-3">
-                        
                             <div class="col-4">
-                              
-                                <select name="" class="form-control text-center" id="product" required>
+                                  <select name="" class="form-control text-center" id="product" required>
                                     <option selected>Select Product or Item </option>
                                     @foreach ($data as $key => $valuees)
                                     <option class="prod" data-all="{{$valuees}}" value="{{$valuees->id}}">{{ $valuees->name}}</option>
@@ -64,65 +60,16 @@
                             </div>
                  
                             <div class="col-4">
-                                <input name="date" type="date">
+                                <input name="date" type="date" class="form-control">
                             </div>
                      
                     </div>
-                {{-- table start --}}
-            {{-- <table class="table table-bordered ">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Product </th>
-                    <th scope="col">Rate</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Discount</th>
-                    <th scope="col">Net Amount</th>
-                 
-                  </tr>
-                </thead>
-                <?php
-                use App\Models\Product;
-                ?>
-                <tbody>
-                    @php
-                    $Net_total =0;
-                    $discount_total = 0;
-                  @endphp
-                    @foreach($products as $item)
-                    @php
-                    $total =0;
-                  @endphp
-                    <tr>
-                        <th scope="row">{{$loop->iteration}}</th>
-                        <td>{{Product::find($item->product_id)->name}}</td>
-                        <td>{{$item->Rate}}</td>
-                        <td>   
-                         
-                           <input  type="number" name="" id="qty" value="{{$item->qty}}"> 
-                          
-                        <td>
-                            <input type="number" value="{{$item->discount}}">
-                        </td>
-                        @php
-                        $total += $item->Rate*$item->qty;
-                         $Net_total+= $item->Rate*$item->qty;
-                         $discount_total += $item->discount;
-                       
-                        @endphp
-                        <td>{{$total - $item->discount}} </td>
-                       
-                    </tr>
-                 
-                    @endforeach
-                 
-                </tbody>
-            </table> --}}
+            
 
             <table class="table table-bordered ">
                 <thead>
                   <tr>
-                    <th scope="col">#</th>
+                    
                     <th scope="col">Product </th>
                     <th scope="col">Rate</th>
                     <th scope="col">Quantity</th>
@@ -135,7 +82,7 @@
                     
                 </tbody>
             </table>
-            {{-- table-end --}}
+            
         </div>
         
             @csrf
@@ -209,7 +156,7 @@
                 if(!(productArr.indexOf(productId) !== -1)) {
                     let netAmount = calculateNetAmount(data.rate, data.qty, data.disc);
                     let table_data = '<tr>'+
-                            '<td>1</td>'+
+                            
                             '<td>'+ data.name +'</td>'+
                             '<td id="rate_'+data.id+'">'+ data.rate +'</td>'+
                             '<td><input class="recalculate" data-id="'+data.id+'" id="qty_'+data.id+'" type="number" value="'+ data.qty +'" /></td>'+

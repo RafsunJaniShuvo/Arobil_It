@@ -11,14 +11,14 @@ use DB;
 
 class ProductController extends Controller
 {
-    public function manage()
+    public function home()
     {
         $products = InventoryProduct::all();
         $data= Product::all();
         $customer = Customer::all();
-        // dd($product);
-            return view('home',compact('products','data','customer'));
-            // print_r($product->rate);
+     
+        return view('home',compact('products','data','customer'));
+           
     }
 
     public function product()
@@ -41,6 +41,7 @@ class ProductController extends Controller
             $billNo = 1;
         }
 
+        $data->customer_id = $request->customer_id;
          $data->totalbillamount = $request->totalbillamount;
          $data->date = $request->date;
          $data->customer_id = $request->customer_id;
@@ -59,7 +60,7 @@ class ProductController extends Controller
     public function bill(Request $request)
     {
         $data = DB::select("SELECT * FROM `inventories` WHERE billNo = $request->bill");
-        //  print_r($data);
+         // print_r($data);
          return view('bill',compact('data'));
         
     }
@@ -78,4 +79,26 @@ class ProductController extends Controller
 
         return response()->json($data);
     }
+
+    public function edit($id)
+    {
+       // echo $id;
+         $billupdate = Inventory::find($id);
+       //dd($billupdate->toArray());
+         return view('billEdit',compact('billupdate'));
+    }
+
+    public function update(Request $request,$id )
+    {
+        $data = Inventory::find($id);
+        $data->totaldiscount = $request->total_dis;
+        $data->totalbillamount = $request->total_amount;
+        $data->paidamount = $request->paid_amount;
+        $data->dueamount = $request->due_amount;
+        $data->update();
+        
+         return redirect('/')->with('success','Data Updated successfully');
+        // echo $data->totaldiscount;
+    }
+
 } 
