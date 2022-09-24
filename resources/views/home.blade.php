@@ -35,50 +35,41 @@
             <div class="col-4 mt-2  ">
                 <button type="submit" class="btn btn-primary">Find</button>
             </div>
-         </form>
            
-    
+        </form>
             </div>
                 {{-- billNO End --}}
-
+                <form action="{{route('amountSave')}}" method="POST">
                
                     <div class="row mb-3">
                         
                             <div class="col-4">
-                                <form action="">
-                                <select name="" class="form-control text-center" id="" required>
+                              
+                                <select name="" class="form-control text-center" id="product" required>
                                     <option selected>Select Product or Item </option>
                                     @foreach ($data as $key => $valuees)
-                                    <option value="{{$valuees->id}}">{{ $valuees->name}}</option>
+                                    <option class="prod" data-all="{{$valuees}}" value="{{$valuees->id}}">{{ $valuees->name}}</option>
                                     @endforeach
                                 </select>
-                            </form>
+                          
                             </div>
                    
-                        <form action="">
                             <div class="col-4">
-                                <select name="" class="form-control text-center" id="" required>
+                                <select name="customer_id" class="form-control text-center" id="" required>
                                     <option selected>Select Customer </option>
                                     @foreach ($customer as $key => $valuees)
                                     <option value="{{$valuees->id}}">{{ $valuees->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
-                        </form>
-                        <form action="">
+                 
                             <div class="col-4">
-                                <input type="date">
+                                <input name="date" type="date">
                             </div>
-                        </form>
-
-                
-        
+                     
                     </div>
-            
-
-
                 {{-- table start --}}
-            <table class="table table-bordered ">
+            {{-- <table class="table table-bordered ">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
@@ -126,20 +117,36 @@
                     @endforeach
                  
                 </tbody>
+            </table> --}}
+
+            <table class="table table-bordered ">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product </th>
+                    <th scope="col">Rate</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Discount</th>
+                    <th scope="col">Net Amount</th>
+                 
+                  </tr>
+                </thead>
+                <tbody id="table_data">
+                    
+                </tbody>
             </table>
             {{-- table-end --}}
-       
         </div>
-        <form action="{{route('amountSave')}}" method="POST">
+        
             @csrf
-        <div class="row flex-column align-items-end">
+            <div class="row flex-column align-items-end">
             <div class="col-4 ">
                 <label for="netTotal">Net Total</label>
-                <input type="text" class="form-control" name="totalbillamount" id="netTotal" value="{{$Net_total - $discount_total}}"  readonly>
+                <input type="text" class="form-control" name="totalbillamount" id="netTotal" value="0"  readonly>
             </div>
             <div class="col-4">
                 <label for="">Discount Total</label>
-                <input type="text" class="form-control" name="discountTotal" value="{{$discount_total}}" readonly>
+                <input type="text" class="form-control" id="discount_total" name="discountTotal" value="0" readonly>
             </div>
             <div class="col-4">
                 <label for="">Paid Amount</label>
@@ -152,8 +159,8 @@
             <div class="col-4 my-2">
                 <button class="btn btn-primary col-6" type="submit">Save Changes</button>
             </div>
-        </div>
-    </form>
+            </div>
+        </form>
 
     </div>
     
@@ -164,20 +171,74 @@
 
 
   </body>
-  {{-- <script>
-      'use strict'
+  <script>
+    'use strict'
     $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
     });
 
+    var productArr = [];
+
+    function calculateNetAmount(rate, qty, discount) {
+        return ( parseFloat(rate) * parseInt(qty) ) - parseFloat(discount)
+    }
+
+    function grandTotal() {
+        let discount = 0;
+        let net_amount = 0;
+        $('.discount').each(function(){
+            discount += parseInt($(this).val());
+        });
+        $('.net_amount').each(function(){
+            net_amount += parseInt($.trim($(this).text()));
+        });
+
+        $('#discount_total').val(discount);
+        $('#netTotal').val(net_amount);
+    }
+
     $(document).ready(function() {
-     $('#qty').click(function(e){
-        alert('ok');
-     });
+        $('#product').change(function(){
+            let productId = $(this).find(':selected').val();
+
+            var url = '{{ route("getDataByAjax", ":id") }}';
+            url = url.replace(':id', productId);
+            $.post(url, function(data){
+                if(!(productArr.indexOf(productId) !== -1)) {
+                    let netAmount = calculateNetAmount(data.rate, data.qty, data.disc);
+                    let table_data = '<tr>'+
+                            '<td>1</td>'+
+                            '<td>'+ data.name +'</td>'+
+                            '<td id="rate_'+data.id+'">'+ data.rate +'</td>'+
+                            '<td><input class="recalculate" data-id="'+data.id+'" id="qty_'+data.id+'" type="number" value="'+ data.qty +'" /></td>'+
+                            '<td><input class="recalculate discount" data-id="'+data.id+'" id="dic_'+data.id+'" type="number" value="'+ data.disc +'" /></td>'+
+                            '<td class="net_amount" id="net_'+data.id+'">'+ netAmount +'</td>'+
+                        '<tr>';
+                    $('#table_data').append(table_data);
+
+                    productArr.push(productId);
+                    grandTotal();
+                }
+            });
+        });
+
+        
+    });
+
+    $(document).on('change', '.recalculate', function() {
+        let id = $(this).data('id');
+        let rate = $.trim($('#rate_' + id).text());
+        let qty = $('#qty_' + id).val();
+        let dis = $('#dic_' + id).val();
+
+        let amount = calculateNetAmount(rate, qty, dis)
+        $('#net_' + id).text('').text(amount);
+
+        grandTotal()
     });
 
 
-  </script> --}}
+  </script>
 </html>

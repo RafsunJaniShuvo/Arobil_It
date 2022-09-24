@@ -27,4 +27,6 @@ Route::post('/amount/save',[ProductController::class,'amountSave'])->name('amoun
 // billNo
 Route::post('/billNO',[ProductController::class,'bill'])->name('bill');
 
+Route::post('/get-products-by-ajax/{id}',[ProductController::class,'getDataByAjax'])->name('getDataByAjax');
+
 

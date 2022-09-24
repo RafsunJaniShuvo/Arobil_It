@@ -29,19 +29,29 @@ class ProductController extends Controller
         $customer = Customer::all();
         return view('home',compact('data','products','customer'));
     }
+
     public function amountSave(Request $request)
     {
-         $data = Inventory::all();
+         $data = new Inventory;
+        $heightBill = Inventory::max('billNo');
+        $billNo = 0;
+        if($heightBill) {
+            $billNo = $heightBill + 1;
+        } else {
+            $billNo = 1;
+        }
 
-        // dd($data);
          $data->totalbillamount = $request->totalbillamount;
+         $data->date = $request->date;
+         $data->customer_id = $request->customer_id;
+         $data->billNo = $billNo;
          $data->totaldiscount = $request->discountTotal;
           $data->dueamount = $request->dueAmount;
          $data->paidamount = $request->paidAmount;
         
-         echo  $data->totalbillamount."<br>".$data->totaldiscount."<br>".$data->dueamount."<br>". $data->paidamount;
-        //   $data->save();
-        // return redirect('/product')->with('success','Data saved successfully');
+        // echo  $data->totalbillamount."<br>".$data->totaldiscount."<br>".$data->dueamount."<br>". $data->paidamount;
+        $data->save();
+        return redirect('/product')->with('success','Data saved successfully');
         // echo $data->totalbillamount;
         // echo  $data->totalbillamount ;
        
@@ -53,4 +63,19 @@ class ProductController extends Controller
          return view('bill',compact('data'));
         
     }
-}
+    public function getDataByAjax(Request $request) {
+        $productId = $request->id;
+
+        $product = Product::find($productId);
+        $invPro = InventoryProduct::where(['inventrory_id' => $product->id])->first();
+        $data = [
+            'id' => $product->id,
+            'name' => $product->name,
+            'rate' => $invPro->Rate,
+            'qty' => $invPro->qty,
+            'disc' => $invPro->discount,
+        ];
+
+        return response()->json($data);
+    }
+} 
