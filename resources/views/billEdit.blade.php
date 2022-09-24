@@ -11,7 +11,6 @@
     <title>Arobil-It!</title>
   </head>
   <body>
-   
 
     <div class="container mt-5">
         <div class="row">
@@ -27,7 +26,7 @@
                 </div>
                 <div class="card-body">
                 <div class="">
-                    <form action="{{route('bilupdate',['id'=>$billupdate->id])}}" method="post">
+                  <form action="{{route('bilupdate',['id'=>$billupdate->id])}}" method="post">
                         @csrf
                   
                     <div class="form-group">
@@ -53,16 +52,12 @@
                   
                     <button type="submit" class="btn btn-primary mt-3">Update</button>
                   </form>
-            </div>
+                </div>
                 </div>
               </div>
            
         </div>
     </div>
-
-
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   </body>
 </html>

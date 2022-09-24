@@ -11,6 +11,7 @@ use DB;
 
 class ProductController extends Controller
 {
+
     public function home()
     {
         $products = InventoryProduct::all();
@@ -21,15 +22,17 @@ class ProductController extends Controller
            
     }
 
+   // product page
     public function product()
     {
         $data= Product::all();
-        // echo $data;
         $products = InventoryProduct::all();
         $customer = Customer::all();
         return view('home',compact('data','products','customer'));
     }
 
+
+    //amount save into inventory
     public function amountSave(Request $request)
     {
          $data = new Inventory;
@@ -50,11 +53,10 @@ class ProductController extends Controller
           $data->dueamount = $request->dueAmount;
          $data->paidamount = $request->paidAmount;
         
-        // echo  $data->totalbillamount."<br>".$data->totaldiscount."<br>".$data->dueamount."<br>". $data->paidamount;
+       
         $data->save();
         return redirect('/product')->with('success','Data saved successfully');
-        // echo $data->totalbillamount;
-        // echo  $data->totalbillamount ;
+
        
     }
     public function bill(Request $request)
@@ -64,6 +66,9 @@ class ProductController extends Controller
          return view('bill',compact('data'));
         
     }
+
+
+    // get data by ajax 
     public function getDataByAjax(Request $request) {
         $productId = $request->id;
 
@@ -80,6 +85,7 @@ class ProductController extends Controller
         return response()->json($data);
     }
 
+    //edit bill
     public function edit($id)
     {
        // echo $id;
@@ -88,6 +94,7 @@ class ProductController extends Controller
          return view('billEdit',compact('billupdate'));
     }
 
+    //update with bill
     public function update(Request $request,$id )
     {
         $data = Inventory::find($id);
@@ -98,7 +105,7 @@ class ProductController extends Controller
         $data->update();
         
          return redirect('/')->with('success','Data Updated successfully');
-        // echo $data->totaldiscount;
+     
     }
 
 } 

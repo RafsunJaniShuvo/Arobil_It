@@ -23,9 +23,9 @@
                 </div>
             @endif
 
-         <form action="{{route('bill')}}" method="POST">
+            <form action="{{route('bill')}}" method="POST">
             @csrf
-               
+                
             <div class="row mb-2 ">
                 <div class="mt-2 col-2">
                     <input type="number" name="bill" class="form-control" id="bill" placeholder="Bill NO">
@@ -35,80 +35,81 @@
                     <button type="submit" class="btn btn-primary">Find</button>
                 </div>
             </div>
-        </form>
+            </form>
                 
-                <form action="{{route('amountSave')}}" method="POST">
-               
-                    <div class="row mb-3">
-                            <div class="col-4">
-                                  <select name="" class="form-control text-center" id="product" required>
-                                    <option selected>Select Product or Item </option>
-                                    @foreach ($data as $key => $valuees)
-                                    <option class="prod" data-all="{{$valuees}}" value="{{$valuees->id}}">{{ $valuees->name}}</option>
-                                    @endforeach
-                                </select>
-                          
-                            </div>
-                   
-                            <div class="col-4">
-                                <select name="customer_id" class="form-control text-center" id="" required>
-                                    <option selected>Select Customer </option>
-                                    @foreach ($customer as $key => $valuees)
-                                    <option value="{{$valuees->id}}">{{ $valuees->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                 
-                            <div class="col-4">
-                                <input name="date" type="date" class="form-control">
-                            </div>
-                     
+            <form action="{{route('amountSave')}}" method="POST">
+                @csrf
+                <div class="row mb-3">
+                        <div class="col-4">
+                                <select name="" class="form-control text-center" id="product" required>
+                                <option selected>Select Product or Item </option>
+                                @foreach ($data as $key => $valuees)
+                                <option class="prod" data-all="{{$valuees}}" value="{{$valuees->id}}">{{ $valuees->name}}</option>
+                                @endforeach
+                            </select>
+                        
+                        </div>
+                
+                        <div class="col-4">
+                            <select name="customer_id" class="form-control text-center" id="" required>
+                                <option selected>Select Customer </option>
+                                @foreach ($customer as $key => $valuees)
+                                <option value="{{$valuees->id}}">{{ $valuees->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                
+                        <div class="col-4">
+                            <input name="date" type="date" class="form-control">
+                        </div>
+                </div>
+
+                <table class="table table-bordered ">
+                    <thead>
+                    <tr>
+                        
+                        <th scope="col">Product </th>
+                        <th scope="col">Rate</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Discount</th>
+                        <th scope="col">Net Amount</th>
+                    
+                    </tr>
+                    </thead>
+                    <tbody id="table_data">
+                        
+                    </tbody>
+                </table>
+                
+                </div>
+                <div class="row flex-column align-items-end">
+
+                    <div class="col-4 ">
+                        <label for="netTotal">Net Total</label>
+                        <input type="text" class="form-control" name="totalbillamount" id="netTotal" value="0"  readonly>
                     </div>
-            
 
-            <table class="table table-bordered ">
-                <thead>
-                  <tr>
-                    
-                    <th scope="col">Product </th>
-                    <th scope="col">Rate</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Discount</th>
-                    <th scope="col">Net Amount</th>
-                 
-                  </tr>
-                </thead>
-                <tbody id="table_data">
-                    
-                </tbody>
-            </table>
-            
+                    <div class="col-4">
+                        <label for="">Discount Total</label>
+                        <input type="text" class="form-control" id="discount_total" name="discountTotal" value="0" readonly>
+                    </div>
+
+                    <div class="col-4">
+                        <label for="">Paid Amount</label>
+                        <input type="text" name="paidAmount" class="form-control" >
+                    </div>
+
+                    <div class="col-4">
+                        <label for="">Due Amount</label>
+                        <input type="text" name="dueAmount" class="form-control" >
+                    </div>
+
+                    <div class="col-4 my-2">
+                        <button class="btn btn-primary col-6" type="submit">Save Changes</button>
+                    </div>
+                </div>
+            </form>
         </div>
-        
-            @csrf
-            <div class="row flex-column align-items-end">
-            <div class="col-4 ">
-                <label for="netTotal">Net Total</label>
-                <input type="text" class="form-control" name="totalbillamount" id="netTotal" value="0"  readonly>
-            </div>
-            <div class="col-4">
-                <label for="">Discount Total</label>
-                <input type="text" class="form-control" id="discount_total" name="discountTotal" value="0" readonly>
-            </div>
-            <div class="col-4">
-                <label for="">Paid Amount</label>
-                <input type="text" name="paidAmount" class="form-control" >
-            </div>
-            <div class="col-4">
-                <label for="">Due Amount</label>
-                <input type="text" name="dueAmount" class="form-control" >
-            </div>
-            <div class="col-4 my-2">
-                <button class="btn btn-primary col-6" type="submit">Save Changes</button>
-            </div>
-            </div>
-        </form>
-
     </div>
     
 
