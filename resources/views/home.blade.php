@@ -111,8 +111,6 @@
             </form>
         </div>
     </div>
-    
-
 
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -133,6 +131,7 @@
         return ( parseFloat(rate) * parseInt(qty) ) - parseFloat(discount)
     }
 
+    //granTotal means sum of net amount
     function grandTotal() {
         let discount = 0;
         let net_amount = 0;
@@ -168,8 +167,8 @@
                         '<tr>';
                     $('#table_data').append(table_data);
 
-                    productArr.push(productId);
-                    grandTotal();
+                    productArr.push(productId);// push productID for checking existing product in array
+                     grandTotal();
                 }
             });
         });
@@ -180,11 +179,12 @@
     $(document).on('change', '.recalculate', function() {
         let id = $(this).data('id');
         let rate = $.trim($('#rate_' + id).text());
+        alert(rate);
         let qty = $('#qty_' + id).val();
         let dis = $('#dic_' + id).val();
 
         let amount = calculateNetAmount(rate, qty, dis)
-        $('#net_' + id).text('').text(amount);
+        $('#net_' + id).text('').text(amount); //sets total amount after cleaning netamount
 
         grandTotal()
     });
